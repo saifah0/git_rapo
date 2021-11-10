@@ -1,2 +1,65 @@
 hello there
 this is the demo comment for you
+How to check permissions in linux
+ Ls -l 
+
+How to check hidden files 
+Ls -a
+
+Pwd stands for print working directory
+
+Three ways to delete directory
+Rm -rf
+Rm -rp
+Rm -r
+
+How to check directory 
+Ls -l (check the first alphabet , if its d then its directory)
+
+How to copy and paste file into directory 
+Cp file dirt
+
+How to cut and paste file into directory
+Mv file1 dirt
+
+How to cut and paste dir into dir
+Mv dir1 dir2
+
+How to rename the directory 
+Mv dirx my folder
+
+How to convert file into hidden file
+Mv file1 .file1
+
+How to check head and tail of the file
+Head file name tail file name
+
+How to add user and how to add group
+Adduser saif
+Addgroup team
+
+How to compress the files
+Tar -cvf dirx.tar dirx
+
+How to unzip the file
+Gunzip dirx.tar.gz
+
+How to extract directory
+Tar -xcf dirx.tar
+
+How to give permission to user
+Chmod 777 dirx
+
+Permission 
+Rwx (user) rwx(group) Rwx(owner)
+
+Another way to add or remove the permission 
+u=r+w,q=r,o=x
+
+To change the owner
+Chown saif ahmed
+
+To change the group
+Chgrp linux file1
+
+
