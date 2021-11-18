@@ -1,0 +1,173 @@
+Docker notes 
+-version 19.03.6
+
+Virtualisation - it is a technique of spitting a physical resource into as many as we want. Eg cpu , memory.
+ Or 
+Virtualisation is a technology that transform hardware into software.
+
+It is basically the integration of resources
+
+It can create multiple servers and can perform multiple tasks on the same machine
+ Advantages of vm
+- Provides high availability
+- Reduce costs
+- Fault tolerance
+- Reduces capex and open
+
+Types of hypervisor 
+- Base mental hypervisor
+It runs directly on the system hardware. Vm ware ESXI is a type 1 hypervisor that runs on the host server hardware without an underlying OS
+- Hosted hypervisor
+It runs within the conventional OS environment
+
+Intro - docker is a tool which creates virtual machine
+
+How to create a container 
+- Docker run -it ubuntu /bin/bash
+How to track the changes in the container
+- Docker diff saifahmed 
+How to create the image of the container
+- Docker commit new container updateimage 
+Docker images
+- To see the existing images.
+How to create container with the image
+- Docker run -it - -name saifahmed updateimage /bin/bash 
+Ls 
+Cd tmp/
+Myfile 
+
+Dockerfile - docker file is basically a text file. It contains same set of instructions
+FROM - for base image this command must be on top of the docker file
+RUN - To execute commands. It will create a layer in image
+MAINTAINER - author / owner /description
+COPY - copy files from local system (docker VM) 
+ADD - similar to copy but, it provides a feature to download files from internet, also we extract file at docker image side.
+EXPOSE - To expose ports such as port 8080 for tomcat, port 80 for nginx etc
+WORKDIR - To set working directory for a container 
+CMD - Execute commands but during container creation
+ENTRYPOINT -  similar to CMD but has higher priority over CMD, first command will be executed by ENTRYPOINT only.
+ENV - Environment variables
+
+Dockerfile
+1 - create file named Dockerfile
+2- add instructions in Dockerfile
+3 - build docker file to create image
+4 - rum image to create container
+Vi Dockerfile
+FROM ubuntu
+RUN echo “technical  guftagu” > /tmp/testfile
+
+To create image out of docker file
+Docker build -t myimg .
+Now the data will be copied to the new file
+To create a container from it,
+Docker in -it - - name testcont test /bin/bash
+
+Second scenario
+FROM ubuntu
+WORKDIR /tmp
+RUN echo "subscribe technical guftagu" > /tmp/testfile
+ENV myname saifahmed
+COPY testfile1 /tmp
+ADD test.tar.gz /tmp
+
+ENV shows the user details
+To check that 
+Do to tmp and type $my name 
+
+- Volume in container 
+It is simply a directory inside of our container 
+First we have to declare this directory as a volume and then share It
+Volume will be created in one container
+You can declare as a volume only while creating container
+Volume cannot be created from existing container 
+You can share one volume across any number of container
+Volume will not be included when you update an image
+ On deleting container volume does not delete.
+
+Create a Dockerfile and write
+FROM ubuntu
+VOLUME [“/myvolume1”]
+
+Then create image from the docker file
+Docker build -t img .
+
+Now create a container 
+Docker run -it —name con1 img /bin/bash
+
+Now share volume with another container 
+   Container1 ——— container 2
+
+Now after creating container2, my volume1 is visible whatever you do in one volume, can see from other volume
+Touch /myvolume/samplefile
+Docker start container1
+Docker attach container1
+Ls volume1
+You can see sample file here
+
+Docker run -it - - name container2 privileged=true - - volumes-from container1 ubuntu /bin/bash
+
+Docker run -it —name container3 -v /volume2 ubuntu /bin/bash
+
+Do ls  — cd /volume2
+Now create one file cont3file and exit
+Now create one more container, and share volume2
+
+Docker run -it —name container4 —privileged=true —volumes-from container3 ubuntu /bin/bash
+
+Now, you can check the files under volume 2
+
+Volumes (host-container)
+
+Docker run -it —name hostcont -v /home/ec2-user:/rajput —privileged=true ubuntu /bin/bash
+
+Basic commands about volume
+
+Docker volume ls
+Docker volume rm 
+Docker volume prune
+Docker volume inspect 
+Docker container inspect
+
+- Docker port Expose
+Docker run -td - -name techserver -p 80:80 ubuntu 
+Docker port techserver (shows the open ports)
+Docker exec -it techserver /bin/bash
+Apt-get update
+Apt- get apache2 -y
+Cd  /var/www/html
+Echo “subscribe tech guftagu”
+>index html
+
+- Docker exec
+It creates a new process in the container’s environment while docker attach just connect the standard input/output of the main process inside the container to corresponding standard input/output error of current terminal. It is specifically for the running new things in a already started container, be it a shell or some other process.
+
+- Difference between expose and publish a docker
+Basically you have three options 
+1. Neither specify expose nor -p
+2. Only specify expose
+3. Specify expose and -p
+
+- If you specify neither expose nor -p, the service in the container will only be accessible from inside the container itself
+- If you expose a port, the service in the container is not accessible from outside docker but from inside other docker containers, so this is good for inter container communication. 
+- If you expose and -p a port, the service in the container is accessible from anywhere, even outside docker.
+
+If you do -p but do not expose docker does an implicit expose. This is because, if a port to be public =, it is automatically also open to the docker container, hence -p includes expose.
+
+ docker run -td --name myjenkins 8080:8080 jenkins
+
+- How to push docker image in docker hub
+
+- Docker stop $(docker ps -a -q)
+- Docker rm $(docker ps -a -q)
+- Docker rmi -f $(docker images -q)
+
+How to connect to the docker hub
+Docker login and enter docker username and password
+
+How to transfer files to docker hub
+Docker tag image1 technicalguftagu/project1
+Docker push technicalguftagu/project
+
+- How to pull the image
+Docker pull technicalguftagu/project1
